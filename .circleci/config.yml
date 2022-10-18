@@ -81,7 +81,7 @@ workflows:
   overall-circleci-commit: #These jobs run on every commit
     jobs:
       - node/run:
-          npm-run: ci
+          npm-run: test:ci
       # - test:
       #     name: node18-test
       #     node-version: "18"
