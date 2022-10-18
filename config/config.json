@@ -15,9 +15,9 @@
   },
   "ci": {
     "username": "postgres",
-    "password": "postgres",
+    "password": "postgres", 
     "database": "circle_test",
-    "host": "postgresql://postgres@localhost/circle_test",
+    "host": "localhost/circle_test",
     "dialect": "postgres"
   },
   "production": {
