@@ -9,8 +9,8 @@
   "test": {
     "username": "postgres",
     "password": "postgres",
-    "database": "remakingeden_test",
-    "host": "127.0.0.1",
+    "database": "circle_test",
+    "host": "postgresql://postgres@localhost/circle_test",
     "dialect": "postgres"
   },
   "ci": {
