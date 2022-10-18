@@ -6,24 +6,24 @@ orbs:
   node: circleci/node@5.0.3
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
-# jobs:
-#   build:
-#     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-#     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-#     docker:
-#       - image: cimg/base:stable
-#     # Add steps to the job
-#     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-#     steps:
-#       - checkout
-#       - node/run:
-#           npm-run: ci
-      # - node/install:
-      #     install-npm: true
-      #     node-version: << parameters.node-version >>
-      # - run:
-      #     name: Install npm packages
-      #     command: npm ci
+jobs:
+  build:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/postgres:14.0
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    parameters:
+      node-version:
+        type: string
+    steps:
+      - checkout
+      - node/install:
+          node-version: << parameters.node-version >>
+      - run:
+          name: Install npm packages
+          command: npm ci
 
   # static-analysis:
   #   # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
@@ -78,10 +78,11 @@ orbs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  overall-circleci-commit: #These jobs run on every commit
+  overall-circleci-commit-status: #These jobs run on every commit
     jobs:
-      - node/run:
-          npm-run: test:ci
+      - build:
+          name: node18-lint
+          node-version: "18"
       # - test:
       #     name: node18-test
       #     node-version: "18"
