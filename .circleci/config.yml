@@ -14,9 +14,6 @@ jobs:
       - image: cimg/base:stable
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    parameters:
-      node-version:
-        type: string
     steps:
       - checkout
       - node/run:
@@ -81,11 +78,9 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  overall-circleci-commit-status: #These jobs run on every commit
+  overall-circleci-commit: #These jobs run on every commit
     jobs:
-      - build:
-          name: node18-lint
-          node-version: "18"
+      - build
       # - test:
       #     name: node18-test
       #     node-version: "18"
