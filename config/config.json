@@ -17,7 +17,7 @@
     "username": "postgres",
     "password": "postgres", 
     "database": "circle_test",
-    "host": "localhost/circle_test",
+    "host": "localhost",
     "dialect": "postgres"
   },
   "production": {
