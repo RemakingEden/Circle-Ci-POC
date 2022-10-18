@@ -16,8 +16,8 @@
   "ci": {
     "username": "postgres",
     "password": "postgres",
-    "database": "remakingeden_ci",
-    "host": "localhost",
+    "database": "circle_test",
+    "host": "postgresql://postgres@localhost/circle_test",
     "dialect": "postgres"
   },
   "production": {
