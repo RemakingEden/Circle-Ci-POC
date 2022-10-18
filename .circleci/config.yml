@@ -8,7 +8,6 @@ orbs:
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   build:
-  
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -20,62 +19,64 @@ jobs:
         type: string
     steps:
       - checkout
-      - node/install:
-          install-npm: true
-          node-version: << parameters.node-version >>
-      - run:
-          name: Install npm packages
-          command: npm ci
+      - node/run:
+          npm-run: ci
+      # - node/install:
+      #     install-npm: true
+      #     node-version: << parameters.node-version >>
+      # - run:
+      #     name: Install npm packages
+      #     command: npm ci
 
-  static-analysis:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    parameters:
-      node-version:
-        type: string
-    steps:
-      - checkout
-      - node/install:
-          install-npm: true
-          node-version: << parameters.node-version >>
-      - run:
-          name: Install npm packages
-          command: npm ci
-      - run:
-          name: Lint
-          command: npx eslint --color .
+  # static-analysis:
+  #   # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+  #   # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  #   docker:
+  #     - image: cimg/base:stable
+  #   # Add steps to the job
+  #   # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  #   parameters:
+  #     node-version:
+  #       type: string
+  #   steps:
+  #     - checkout
+  #     - node/install:
+  #         install-npm: true
+  #         node-version: << parameters.node-version >>
+  #     - run:
+  #         name: Install npm packages
+  #         command: npm ci
+  #     - run:
+  #         name: Lint
+  #         command: npx eslint --color .
 
-  test:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    parameters:
-      node-version:
-        type: string
-    steps:
-      - checkout
-      - node/install:
-          install-npm: true
-          node-version: << parameters.node-version >>
-      - run:
-          name: Install npm packages
-          command: npm ci
-      - run:
-          name: Start Integration Tests
-          command: npm run test:ci
-      - run:
-          name: Start Integration Tests
-          command: npm run test:ci
-      - run:
-          name: Start Unit Tests
-          command: echo "No unit tests available currently"
+  # test:
+  #   # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+  #   # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  #   docker:
+  #     - image: cimg/base:stable
+  #   # Add steps to the job
+  #   # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  #   parameters:
+  #     node-version:
+  #       type: string
+  #   steps:
+  #     - checkout
+  #     - node/install:
+  #         install-npm: true
+  #         node-version: << parameters.node-version >>
+  #     - run:
+  #         name: Install npm packages
+  #         command: npm ci
+  #     - run:
+  #         name: Start Integration Tests
+  #         command: npm run test:ci
+  #     - run:
+  #         name: Start Integration Tests
+  #         command: npm run test:ci
+  #     - run:
+  #         name: Start Unit Tests
+  #         command: echo "No unit tests available currently"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -85,10 +86,10 @@ workflows:
       - build:
           name: node18-lint
           node-version: "18"
-      - test:
-          name: node18-test
-          node-version: "18"
-      - static-analysis:
-          name: node18-static-analysis
-          node-version: "18"
+      # - test:
+      #     name: node18-test
+      #     node-version: "18"
+      # - static-analysis:
+      #     name: node18-static-analysis
+      #     node-version: "18"
 
