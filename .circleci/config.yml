@@ -80,7 +80,7 @@ orbs:
 workflows:
   overall-circleci-commit: #These jobs run on every commit
     jobs:
-      - build:
+      - node/run:
           npm-run: ci
       # - test:
       #     name: node18-test
