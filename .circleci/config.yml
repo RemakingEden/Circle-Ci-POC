@@ -63,7 +63,7 @@ jobs:
           command: npm ci
       - run:
           name: Install TruffleHog
-          command: go install github.com/trufflesecurity/trufflehog.git@latest
+          command: go install github.com/trufflesecurity/trufflehog@latest
       - run:
           name: Execute secret scan
           command: trufflehog git file://Circle-Ci-POC
