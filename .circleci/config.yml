@@ -44,6 +44,29 @@ jobs:
       - run:
           name: Lint
           command: npx eslint --color .
+  SCA:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/go:1.19-node
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    parameters:
+      node-version:
+        type: string
+    steps:
+      - checkout
+      - node/install:
+          node-version: << parameters.node-version >>
+      - run:
+          name: Install npm packages
+          command: npm ci
+      - run:
+          name: Install TruffleHog
+          command: go install github.com/trufflesecurity/trufflehog.git@latest
+      - run:
+          name: Execute secret scan
+          command: trufflehog git file://Circle-Ci-POC
   test:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -70,7 +93,7 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  overall-circleci-commit-status: #These jobs run on every commit
+  overall-circleci-commit: #These jobs run on every commit
     jobs:
       - build:
           name: node18-lint
