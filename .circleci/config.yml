@@ -4,7 +4,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.3
-  
+
 jobs:
   build:
     docker:
@@ -70,7 +70,7 @@ workflows:
   overall-circleci-commit: 
     jobs:
       - build:
-          name: node18-lint
+          name: node18-build
           node-version: "18"
       - static-analysis:
           name: node18-static-analysis
