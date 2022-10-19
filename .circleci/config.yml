@@ -1,0 +1,85 @@
+
+
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.3
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:stable
+    parameters:
+      node-version:
+        type: string
+    steps:
+      - checkout
+      - node/install:
+          node-version: << parameters.node-version >>
+      - run:
+          name: Install npm packages
+          command: npm ci
+  static-analysis:
+    docker:
+      - image: cimg/base:stable
+    parameters:
+      node-version:
+        type: string
+    steps:
+      - checkout
+      - node/install:
+          node-version: << parameters.node-version >>
+      - run:
+          name: Install npm packages
+          command: npm ci
+      - run:
+          name: Lint
+          command: npx eslint --color .
+  sca:
+    docker:
+      - image: trufflesecurity/trufflehog:latest
+    parameters:
+      node-version:
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: Run Secret Scan
+          command: trufflehog git file://. --debug 
+  test:
+    docker:
+      - image: cimg/base:stable
+      - image: cimg/postgres:14.0
+        environment:
+          POSTGRES_USER: postgres
+    parameters:
+      node-version:
+        type: string
+    steps:
+      - checkout
+      - node/install:
+          node-version: << parameters.node-version >>
+      - run:
+          name: Install npm packages
+          command: npm ci
+      - run:
+          name: Run Integration Tests
+          command: npm run test:ci
+
+workflows:
+  overall-circleci-commit: 
+    jobs:
+      - build:
+          name: node18-build
+          node-version: "18"
+      - static-analysis:
+          name: node18-static-analysis
+          node-version: "18"
+      - sca:
+          name: node18-sca
+          node-version: "18"
+      - test:
+          name: node18-test
+          node-version: "18"
+
+
