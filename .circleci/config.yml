@@ -48,7 +48,7 @@ jobs:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: cimg/base:stable
+      - image: trufflesecurity/trufflehog:latest
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     parameters:
@@ -56,14 +56,9 @@ jobs:
         type: string
     steps:
       - checkout
-      - node/install:
-          node-version: << parameters.node-version >>
-      - run:
-          name: Install npm packages
-          command: npm ci
       - run:
           name: Install TruffleHog
-          command: docker run -it -v "$PWD:/pwd" ghcr.io/trufflesecurity/trufflehog:latest github --repo https://github.com/trufflesecurity/test_keys --debug 
+          command: github --repo https://github.com/trufflesecurity/test_keys --debug 
   test:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
